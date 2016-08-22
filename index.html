@@ -9,9 +9,6 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">
   <link rel="canonical" href="https://after-fiver-test1.azurewebsites.net/">
   <title>After Fiver v0.0.1</title>
-  <script>
-    navigator.serviceWorker.register('/serviceworker.js').then(function (registration) {}).catch(function (error) {});
-  </script>
 </head>
 
 <body>
@@ -23,6 +20,18 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.29.5/react-bootstrap.min.js"></script>
 
   <script type="text/babel"></script>
+  <script>
+    window.addEventListener('load', function () {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register("/serviceWorker.js")
+          .then(function (registration) {
+            console.log("serviceWorker registed.");
+          }).catch(function (error) {
+            console.warn("serviceWorker error.", error);
+          });
+      }
+    });
+  </script>
 </body>
 
 </html>
