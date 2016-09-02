@@ -61,20 +61,45 @@
 <body>
   <div id="map"></div>
 
-  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
-        <!-- Title -->
         <span class="mdl-layout-title"><i class="material-icons">local_bar</i> After Fiver</span>
       </div>
     </header>
     <div class="mdl-layout__drawer">
-      <span class="mdl-layout-title"><i class="material-icons">local_bar</i> After Fiver</span>
       <nav class="mdl-navigation">
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
+        <div id="user-container">
+          <div hidden id="user-pic"></div>
+          <div hidden id="user-name"></div>
+          <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+            Logout
+          </button>
+          <button hidden id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">account_circle</i> Facebook Login
+          </button>
+        </div>
+        <div class="mdl-card__supporting-text">
+          <form action="#">
+            <div class="mdl-textfield mdl-js-textfield">
+              <input class="mdl-textfield__input" type="text" id="hours" />
+              <label class="mdl-textfield__label" for="hours">hours</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+              <input class="mdl-textfield__input" type="text" id="location" />
+              <label class="mdl-textfield__label" for="hours">location</label>
+            </div>
+          </form>
+          <div class="mdl-card__actions">
+            <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Go!</button>
+          </div>
+        </div>
+        <div>
+          <a class="mdl-navigation__link" href="">Link</a>
+          <a class="mdl-navigation__link" href="">Link</a>
+          <a class="mdl-navigation__link" href="">Link</a>
+          <a class="mdl-navigation__link" href="">Link</a>
+        </div>
       </nav>
     </div>
     <main class="mdl-layout__content">
