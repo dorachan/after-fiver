@@ -1,5 +1,12 @@
 'use strict';
 
+var map, infoWindow;
+
+var curpos = {
+  lat: 34.6896969,
+  lng: 135.1889427
+};
+
 // Initializes AfterFiver.
 function AfterFiver() {
   this.checkSetup();
@@ -33,6 +40,28 @@ AfterFiver.prototype.go = function () {
   if (document.getElementById('drawer').classList.contains('is-visible')) {
     document.querySelector('.mdl-layout').MaterialLayout.drawerToggleHandler_();
   }
+
+  var service = new google.maps.places.PlacesService(map);
+  service.nearbySearch({
+    location: curpos,
+    radius: 500,
+    types: ['store']
+  }, function (results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      for (var i = 0; i < results.length; i++) {
+        createMarker(results[i]);
+      }
+    }
+  });
+
+
+
+
+
+
+
+
+
 };
 
 // Signs-in After Fiver.
@@ -124,30 +153,46 @@ window.onload = function () {
 
 function initMap() {
   // Create a map object and specify the DOM element for display.
-  var map = new google.maps.Map(document.getElementById('map'), {
-    center: {
-      lat: 34.6896969,
-      lng: 135.1889427
-    },
-    scrollwheel: false,
-    zoom: 16
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: curpos,
+    //    scrollwheel: false,
+    zoom: 16,
+    language: 'en'
   });
-
-  var infoWindow = new google.maps.InfoWindow({
-    map: map
-  });
+  infoWindow = new google.maps.InfoWindow();
+  var geocoder = new google.maps.Geocoder;
 
   // Try HTML5 geolocation.
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function (position) {
-      var pos = {
+      curpos = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
 
-      infoWindow.setPosition(pos);
-      infoWindow.setContent('Location found.');
-      map.setCenter(pos);
+      infoWindow.setPosition(curpos);
+      infoWindow.setContent('here');
+      infoWindow.open(map);
+      map.setCenter(curpos);
+
+      geocoder.geocode({
+        'location': curpos
+      }, function (results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+          if (results[1]) {
+            var marker = new google.maps.Marker({
+              position: curpos,
+              map: map
+            });
+            infoWindow.setContent(results[1].formatted_address);
+            document.getElementById('location').value = results[1].formatted_address.split(',')[0];
+          } else {
+            window.alert('No results found');
+          }
+        } else {
+          window.alert('Geocoder failed due to: ' + status);
+        }
+      });
     }, function () {
       handleLocationError(true, infoWindow, map.getCenter());
     });
@@ -155,6 +200,19 @@ function initMap() {
     // Browser doesn't support Geolocation
     handleLocationError(false, infoWindow, map.getCenter());
   }
+}
+
+function createMarker(place) {
+  var marker = new google.maps.Marker({
+    map: map,
+    position: place.geometry.location
+  });
+
+  google.maps.event.addListener(marker, 'click', function () {
+    console.log(place.name);
+    infoWindow.setContent(place.name);
+    infoWindow.open(map, this);
+  });
 }
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
