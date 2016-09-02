@@ -9,9 +9,11 @@ function AfterFiver() {
   this.signInButton = document.getElementById('sign-in');
   this.signOutButton = document.getElementById('sign-out');
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
+  this.goButton = document.getElementById('go');
 
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
   this.signInButton.addEventListener('click', this.signIn.bind(this));
+  this.goButton.addEventListener('click', this.go.bind(this));
 
   this.initFirebase();
 }
@@ -25,6 +27,13 @@ AfterFiver.prototype.initFirebase = function () {
   this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
 };
 
+
+// Go After Fiver.
+AfterFiver.prototype.go = function () {
+  if (document.getElementById('drawer').classList.contains('is-visible')) {
+    document.querySelector('.mdl-layout').MaterialLayout.drawerToggleHandler_();
+  }
+};
 
 // Signs-in After Fiver.
 AfterFiver.prototype.signIn = function (facebookUser) {
