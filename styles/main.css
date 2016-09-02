@@ -8,9 +8,14 @@ body {
   width: 100%;
   height: calc(100% - 64px);
   top: 64px;
+  z-index: 10;
 }
 
 .facebook_icon {
   width: 32px;
   height: 32px;
+}
+
+#drawer {
+  z-index: 100;
 }
