@@ -3,6 +3,10 @@ body {
   font-family: 'Roboto', 'Helvetica', sans-serif;
 }
 
+#drawer {
+  z-index: 10000;
+}
+
 #map {
   position: absolute;
   width: 100%;
@@ -11,11 +15,14 @@ body {
   z-index: 10;
 }
 
+@media screen and (max-width: 1024px) {
+  #map {
+    height: calc(100% - 56px);
+    top: 56px;
+  }
+}
+
 .facebook_icon {
   width: 32px;
   height: 32px;
-}
-
-#drawer {
-  z-index: 100;
 }
