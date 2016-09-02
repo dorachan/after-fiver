@@ -1,6 +1,6 @@
 'use strict';
 
-var map, infoWindow;
+var map, infowindow, geocoder;
 
 var curpos = {
   lat: 34.6896969,
@@ -159,8 +159,8 @@ function initMap() {
     zoom: 16,
     language: 'en'
   });
-  infoWindow = new google.maps.InfoWindow();
-  var geocoder = new google.maps.Geocoder;
+  infowindow = new google.maps.InfoWindow();
+  geocoder = new google.maps.Geocoder();
 
   // Try HTML5 geolocation.
   if (navigator.geolocation) {
@@ -170,9 +170,9 @@ function initMap() {
         lng: position.coords.longitude
       };
 
-      infoWindow.setPosition(curpos);
-      infoWindow.setContent('here');
-      infoWindow.open(map);
+      infowindow.setPosition(curpos);
+      infowindow.setContent('here');
+      infowindow.open(map);
       map.setCenter(curpos);
 
       geocoder.geocode({
@@ -184,7 +184,7 @@ function initMap() {
               position: curpos,
               map: map
             });
-            infoWindow.setContent(results[1].formatted_address);
+            infowindow.setContent(results[1].formatted_address);
             document.getElementById('location').value = results[1].formatted_address.split(',')[0];
           } else {
             window.alert('No results found');
@@ -194,11 +194,11 @@ function initMap() {
         }
       });
     }, function () {
-      handleLocationError(true, infoWindow, map.getCenter());
+      handleLocationError(true, infowindow, map.getCenter());
     });
   } else {
     // Browser doesn't support Geolocation
-    handleLocationError(false, infoWindow, map.getCenter());
+    handleLocationError(false, infowindow, map.getCenter());
   }
 }
 
@@ -210,14 +210,14 @@ function createMarker(place) {
 
   google.maps.event.addListener(marker, 'click', function () {
     console.log(place.name);
-    infoWindow.setContent(place.name);
-    infoWindow.open(map, this);
+    infowindow.setContent(place.name);
+    infowindow.open(map, this);
   });
 }
 
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-  infoWindow.setPosition(pos);
-  infoWindow.setContent(browserHasGeolocation ?
+function handleLocationError(browserHasGeolocation, infowindow, pos) {
+  infowindow.setPosition(pos);
+  infowindow.setContent(browserHasGeolocation ?
     'Error: The Geolocation service failed.' :
     'Error: Your browser doesn\'t support geolocation.');
 }
