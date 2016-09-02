@@ -27,7 +27,7 @@ AfterFiver.prototype.initFirebase = function () {
 
 
 // Signs-in After Fiver.
-AfterFiver.prototype.signIn = function(facebookUser) {
+AfterFiver.prototype.signIn = function (facebookUser) {
   // Sign in Firebase using popup auth and facebook as the identity provider.
   var provider = new firebase.auth.FacebookAuthProvider();
   provider.addScope('public_profile');
@@ -36,17 +36,17 @@ AfterFiver.prototype.signIn = function(facebookUser) {
 };
 
 // Signs-out of After Fiver.
-AfterFiver.prototype.signOut = function() {
+AfterFiver.prototype.signOut = function () {
   // Sign out of Firebase.
   this.auth.signOut();
 };
 
 // Triggers when the auth state change for instance when the user signs-in or signs-out.
-AfterFiver.prototype.onAuthStateChanged = function(user) {
+AfterFiver.prototype.onAuthStateChanged = function (user) {
   if (user) { // User is signed in!
     // Get profile pic and user's name from the Firebase user object.
     var profilePicUrl = user.photoURL; // Only change these two lines!
-    var userName = user.displayName;   // Only change these two lines!
+    var userName = user.displayName; // Only change these two lines!
 
     // Set the user's profile pic and name.
     this.userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
@@ -71,7 +71,7 @@ AfterFiver.prototype.onAuthStateChanged = function(user) {
 };
 
 // Returns true if user is signed-in. Otherwise false and displays a message.
-AfterFiver.prototype.checkSignedInWithMessage = function() {
+AfterFiver.prototype.checkSignedInWithMessage = function () {
   // Return true if the user is signed in Firebase
   if (this.auth.currentUser) {
     return true;
@@ -85,19 +85,6 @@ AfterFiver.prototype.checkSignedInWithMessage = function() {
   this.signInSnackbar.MaterialSnackbar.showSnackbar(data);
   return false;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
