@@ -59,53 +59,72 @@
 </head>
 
 <body>
-  <div id="map"></div>
-
-  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-tabs">
     <header class="mdl-layout__header">
-      <div class="mdl-layout__header-row">
+<!--
+<div class="mdl-layout__header-row">
         <span class="mdl-layout-title"><i class="material-icons">local_bar</i> After Fiver</span>
       </div>
+-->
+      <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+        <a href="#fixed-tab-1" class="mdl-layout__tab is-active">Setting</a>
+        <a href="#fixed-tab-2" class="mdl-layout__tab" id="map-tab">Map</a>
+        <a href="#fixed-tab-3" class="mdl-layout__tab">List</a>
+      </div>
     </header>
-    <div class="mdl-layout__drawer" id="drawer">
-      <nav class="mdl-navigation">
-        <div id="user-container">
-          <div hidden id="user-pic"></div>
-          <div hidden id="user-name"></div>
-          <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect">
-            Logout
-          </button>
-          <button hidden id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect">
-            <img src="images/FB-f-Logo__blue_144.png" class="facebook_icon" alt="facebook"> Facebook Login
-          </button>
-        </div>
-        <div class="mdl-card__supporting-text">
-          <form action="#">
-            <div class="mdl-textfield mdl-js-textfield">
-              <input class="mdl-textfield__input" type="text" id="hours" />
-              <label class="mdl-textfield__label" for="hours">hours</label>
+    <main class="mdl-layout__content">
+      <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
+        <div class="page-content">
+          <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col">
+              <div id="user-container">
+                <div hidden id="user-pic"></div>
+                <div hidden id="user-name"></div>
+                <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                  Logout
+                </button>
+                <button hidden id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                  <img src="images/FB-f-Logo__blue_144.png" class="facebook_icon" alt="facebook"> Facebook Login
+                </button>
+              </div>
             </div>
-            <div class="mdl-textfield mdl-js-textfield">
-              <input class="mdl-textfield__input" type="text" id="location" />
-              <label class="mdl-textfield__label" for="hours">location</label>
+            <div class="mdl-cell mdl-cell--4-col">
+              <div class="mdl-card__supporting-text">
+                <form action="#">
+                  <div class="mdl-textfield mdl-js-textfield">
+                    <input class="mdl-textfield__input" type="text" id="hours" />
+                    <label class="mdl-textfield__label" for="hours">hours</label>
+                  </div>
+                  <div class="mdl-textfield mdl-js-textfield">
+                    <input class="mdl-textfield__input" type="text" id="location" />
+                    <label class="mdl-textfield__label" for="hours">location</label>
+                  </div>
+                </form>
+                <div class="mdl-card__actions">
+                  <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="go">Go!</button>
+                </div>
+              </div>
             </div>
-          </form>
-          <div class="mdl-card__actions">
-            <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="go">Go!</button>
           </div>
         </div>
-        <div>
-          <a class="mdl-navigation__link" href="">Link</a>
-          <a class="mdl-navigation__link" href="">Link</a>
-          <a class="mdl-navigation__link" href="">Link</a>
-          <a class="mdl-navigation__link" href="">Link</a>
+      </section>
+      <section class="mdl-layout__tab-panel" id="fixed-tab-2">
+        <div class="page-content">
+          <div id="map"></div>
         </div>
-      </nav>
-    </div>
-    <main class="mdl-layout__content">
-      <div class="page-content">
-        <!-- Your content goes here -->
-      </div>
+      </section>
+      <section class="mdl-layout__tab-panel" id="fixed-tab-3">
+        <div class="page-content">
+          <!-- Your content goes here -->
+        </div>
+      </section>
+      <section class="mdl-layout__tab-panel" id="fixed-tab-4">
+        <div class="page-content">
+            <div class="mdl-cell mdl-cell--12-col">
+              <div class="setting3">dummy</div>
+            </div>
+        </div>
+      </section>
     </main>
   </div>
 

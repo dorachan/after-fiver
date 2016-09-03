@@ -11,6 +11,7 @@ var curpos = {
 function AfterFiver() {
   this.checkSetup();
 
+  this.mapTab = document.getElementById('map-tab');
   this.userPic = document.getElementById('user-pic');
   this.userName = document.getElementById('user-name');
   this.signInButton = document.getElementById('sign-in');
@@ -18,6 +19,7 @@ function AfterFiver() {
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
   this.goButton = document.getElementById('go');
 
+  this.mapTab.addEventListener('click', refreshMap);
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
   this.signInButton.addEventListener('click', this.signIn.bind(this));
   this.goButton.addEventListener('click', this.go.bind(this));
@@ -40,7 +42,7 @@ AfterFiver.prototype.go = function () {
   if (document.getElementById('drawer').classList.contains('is-visible')) {
     document.querySelector('.mdl-layout').MaterialLayout.drawerToggleHandler_();
   }
-
+  initMap();
   var service = new google.maps.places.PlacesService(map);
   service.nearbySearch({
     location: curpos,
@@ -200,6 +202,12 @@ function initMap() {
     // Browser doesn't support Geolocation
     handleLocationError(false, infowindow, map.getCenter());
   }
+}
+
+function refreshMap() {
+  setTimeout(function() {
+  google.maps.event.trigger(map, 'resize');
+  }, 100);
 }
 
 function createMarker(place) {
