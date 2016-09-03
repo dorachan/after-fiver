@@ -1,5 +1,38 @@
 'use strict';
 
+var result_route = [
+  {
+    name: "観光地１",
+    address: "神戸市○○○１",
+    description: "キャッチコピー１",
+    duration: "2hours30min",
+    stay_time: "30min",
+    distance: "30km,
+    fee: "1000JPY",
+    img: ""
+},
+  {
+    name: "観光地２",
+    address: "神戸市○○○２",
+    description: "キャッチコピー２",
+    duration: "1hours",
+    stay_time: "30min",
+    distance: "10km,
+    fee: "0JPY",
+    img: ""
+},
+  {
+    name: "観光地３",
+    address: "神戸市○○○３",
+    description: "キャッチコピー３",
+    duration: "30min",
+    stay_time: "30min",
+    distance: "15km,
+    fee: "500JPY",
+    img: ""
+}
+];
+
 var map, infowindow, geocoder;
 
 var curpos = {
@@ -12,17 +45,23 @@ function AfterFiver() {
   this.checkSetup();
 
   this.mapTab = document.getElementById('map-tab');
+  this.videoTab = document.getElementById('video-tab');
   this.userPic = document.getElementById('user-pic');
   this.userName = document.getElementById('user-name');
   this.signInButton = document.getElementById('sign-in');
   this.signOutButton = document.getElementById('sign-out');
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
   this.goButton = document.getElementById('go');
+  this.switch1 = document.getElementById('switch-1');
+  this.switch2 = document.getElementById('switch-2');
 
   this.mapTab.addEventListener('click', refreshMap);
+  this.videoTab.addEventListener('click', showVideo);
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
   this.signInButton.addEventListener('click', this.signIn.bind(this));
   this.goButton.addEventListener('click', this.go.bind(this));
+  this.switch1.addEventListener('click', this.toggleswitch1.bind(this));
+  this.switch2.addEventListener('click', this.toggleswitch2.bind(this));
 
   this.initFirebase();
 }
@@ -39,9 +78,8 @@ AfterFiver.prototype.initFirebase = function () {
 
 // Go After Fiver.
 AfterFiver.prototype.go = function () {
-  if (document.getElementById('drawer').classList.contains('is-visible')) {
-    document.querySelector('.mdl-layout').MaterialLayout.drawerToggleHandler_();
-  }
+  //changetab
+
   initMap();
   var service = new google.maps.places.PlacesService(map);
   service.nearbySearch({
@@ -55,16 +93,28 @@ AfterFiver.prototype.go = function () {
       }
     }
   });
-
-
-
-
-
-
-
-
-
 };
+
+AfterFiver.prototype.toggleswitch1 = function () {
+  var ss = document.getElementById('switch-1');
+  if (ss.checked) {
+    document.getElementById('switch-1-input').style.display = 'none';
+  } else {
+    document.getElementById('switch-1-input').style.display = 'block';
+  }
+};
+
+AfterFiver.prototype.toggleswitch2 = function () {
+  var ss = document.getElementById('switch-2');
+  if (ss.checked) {
+    document.getElementById('switch-2-input').style.display = 'none';
+  } else {
+    document.getElementById('switch-2-input').style.display = 'block';
+  }
+};
+
+
+
 
 // Signs-in After Fiver.
 AfterFiver.prototype.signIn = function (facebookUser) {
@@ -89,7 +139,13 @@ AfterFiver.prototype.onAuthStateChanged = function (user) {
     var userName = user.displayName; // Only change these two lines!
 
     // Set the user's profile pic and name.
-    this.userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
+    if (user.photoURL) {
+      var pic = document.createElement('img');
+      pic.src = user.photoURL;
+      pic.className = 'user-pic';
+      this.userPic.appendChild(pic);
+    }
+
     this.userName.textContent = userName;
 
     // Show user's profile and sign-out button.
@@ -125,13 +181,6 @@ AfterFiver.prototype.checkSignedInWithMessage = function () {
   this.signInSnackbar.MaterialSnackbar.showSnackbar(data);
   return false;
 };
-
-
-
-
-
-
-
 
 
 // Checks that the Firebase SDK has been correctly setup and configured.
@@ -187,7 +236,7 @@ function initMap() {
               map: map
             });
             infowindow.setContent(results[1].formatted_address);
-            document.getElementById('location').value = results[1].formatted_address.split(',')[0];
+            //document.getElementById('location').value = results[1].formatted_address.split(',')[0];
           } else {
             window.alert('No results found');
           }
@@ -204,10 +253,53 @@ function initMap() {
   }
 }
 
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      curpos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+
+      infowindow.setPosition(curpos);
+      infowindow.setContent('here');
+      infowindow.open(map);
+      map.setCenter(curpos);
+
+      geocoder.geocode({
+        'location': curpos
+      }, function (results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+          if (results[1]) {
+            var marker = new google.maps.Marker({
+              position: curpos,
+              map: map
+            });
+            infowindow.setContent(results[1].formatted_address);
+            // document.getElementById('location').value = results[1].formatted_address.split(',')[0];
+          } else {
+            window.alert('No results found');
+          }
+        } else {
+          window.alert('Geocoder failed due to: ' + status);
+        }
+      });
+    }, function () {
+      handleLocationError(true, infowindow, map.getCenter());
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infowindow, map.getCenter());
+  }
+}
+
+
+
 function refreshMap() {
-  setTimeout(function() {
-  google.maps.event.trigger(map, 'resize');
+  setTimeout(function () {
+    google.maps.event.trigger(map, 'resize');
   }, 100);
+  getLocation();
 }
 
 function createMarker(place) {
@@ -228,4 +320,12 @@ function handleLocationError(browserHasGeolocation, infowindow, pos) {
   infowindow.setContent(browserHasGeolocation ?
     'Error: The Geolocation service failed.' :
     'Error: Your browser doesn\'t support geolocation.');
+}
+
+function showVideo() {
+  setTimeout(function () {
+    document.getElementById('video-container').style.display = 'block';
+    document.getElementById('video-player').src = "https://www.nhk.or.jp/nhkworld/app/vod/?vid=JoZGwxeDoM5t2pK2Ls6npDn6w4fVRi1g";
+  }, 100);
+
 }

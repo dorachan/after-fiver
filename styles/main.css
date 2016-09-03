@@ -29,3 +29,57 @@ body {
 .mdl-layout__header {
   min-height: inherit;
 }
+
+.video-spacer {
+  width: 100%;
+  height: 100%;
+}
+
+.video-container {
+  position: relative;
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+.video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: 0;
+}
+
+.user-pic {
+  width: 64px;
+  height: 64px;
+}
+
+#user-pic {
+  display: inline-block;
+}
+
+#user-name {
+  display: inline-block;
+}
+
+#switch-1-input,
+#switch-2-input {
+  display: none;
+}
+
+.setting-card {
+  width: 100%;
+}
+
+.demo-card-wide.mdl-card {
+  width: 100%;
+}
+.demo-card-wide > .mdl-card__title {
+  color: #fff;
+  height: 176px;
+  background: url('/images/yakei.png') center / cover;
+}
+.demo-card-wide > .mdl-card__menu {
+  color: #fff;
+}
