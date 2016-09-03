@@ -2,38 +2,60 @@
 
 var result_route = [
   {
-    name: "観光地１",
-    address: "神戸市○○○１",
-    description: "キャッチコピー１",
-    duration: "2hours30min",
-    stay_time: "30min",
+    id: 1,
+    name: "Kobe Haborland",
+    address: "1 Higashi Kawasaki-cho, Chuo-ku, Kobe",
+    description: "Romantic evening port with vivid coloured illuminations and sparkling cruise ships.",
+    duration: "2 hours",
+    stay_time: "20min",
     distance: "30km",
-    fee: "1000JPY",
-    img: ""
-},
-  {
-    name: "観光地２",
-    address: "神戸市○○○２",
-    description: "キャッチコピー２",
-    duration: "1hours",
-    stay_time: "30min",
-    distance: "10km",
     fee: "0JPY",
-    img: ""
+    img: "http://www.feel-kobe.jp/kobe-yakei/area/sea_side/02/images/01.png",
+    restauratn: "uni"
 },
   {
-    name: "観光地３",
-    address: "神戸市○○○３",
-    description: "キャッチコピー３",
-    duration: "30min",
-    stay_time: "30min",
+    id: 2,
+    name: "Rokko Garden Terrace",
+    address: "1877-9 Gofuke yama Rokkosan-cho, Nada-ku, Kobe",
+    description: "Romantic dinner with a beautiful panoramic view.",
+    duration: "1 hour",
+    stay_time: "20min",
     distance: "15km",
-    fee: "500JPY",
-    img: ""
+    fee: "0JPY",
+    img: "http://www.feel-kobe.jp/kobe-yakei/area/mountain/06/images/01.png",
+    restauratn: "beef"
+},
+  {
+    id: 3,
+    name: "Pearl Bridge (Akashi kaikyo Bridge)",
+    address: "Higashi Maiko-cho, Tarumi-ku, Kobe",
+    description: "The longest suspension bridge in the world. Incredible reinbow coloured illuminations.",
+    duration: "1 hour",
+    stay_time: "20min",
+    distance: "15km",
+    fee: "1,000 JPY",
+    img: "http://www.feel-kobe.jp/kobe-yakei/area/sea_side/01/images/01.png",
+    restauratn: ""
 }
+
 ];
 
-var map, infowindow, geocoder;
+var map, infowindow, geocoder, directions, directionsDisplay;
+var ary = [];
+var waypts = [];
+var renderFLG = false;
+var directionsDisplay;
+var mode;
+var oldDirections = [];
+var currentDirections = null;
+var defaultStartSpot = "新神戸駅";
+var defaultEndSpot = "伊丹空港";
+var curStartSpot, curEndSpot;
+var stepDisplay;
+var markerArray = [];
+var _waypts = [];
+
+
 
 var curpos = {
   lat: 34.6896969,
@@ -44,8 +66,8 @@ var curpos = {
 function AfterFiver() {
   this.checkSetup();
 
-  this.mapTab = document.getElementById('map-tab');
-  this.videoTab = document.getElementById('video-tab');
+  this.mapTab = document.getElementById('tab-2');
+  this.videoTab = document.getElementById('tab-4');
   this.userPic = document.getElementById('user-pic');
   this.userName = document.getElementById('user-name');
   this.signInButton = document.getElementById('sign-in');
@@ -64,6 +86,7 @@ function AfterFiver() {
   this.switch2.addEventListener('click', this.toggleswitch2.bind(this));
 
   this.initFirebase();
+  makeList(result_route);
 }
 
 AfterFiver.prototype.initFirebase = function () {
@@ -78,21 +101,22 @@ AfterFiver.prototype.initFirebase = function () {
 
 // Go After Fiver.
 AfterFiver.prototype.go = function () {
-  //changetab
-
+  changeList();
+  /*
   initMap();
-  var service = new google.maps.places.PlacesService(map);
-  service.nearbySearch({
-    location: curpos,
-    radius: 500,
-    types: ['store']
-  }, function (results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      for (var i = 0; i < results.length; i++) {
-        createMarker(results[i]);
+    var service = new google.maps.places.PlacesService(map);
+    service.nearbySearch({
+      location: curpos,
+      radius: 500,
+      types: ['store']
+    }, function (results, status) {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        for (var i = 0; i < results.length; i++) {
+          createMarker(results[i]);
+        }
       }
-    }
-  });
+    });
+  */
 };
 
 AfterFiver.prototype.toggleswitch1 = function () {
@@ -207,11 +231,12 @@ function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     center: curpos,
     //    scrollwheel: false,
-    zoom: 16,
+    zoom: 12,
     language: 'en'
   });
   infowindow = new google.maps.InfoWindow();
   geocoder = new google.maps.Geocoder();
+  directions = new google.maps.DirectionsService();
 
   // Try HTML5 geolocation.
   if (navigator.geolocation) {
@@ -221,9 +246,9 @@ function initMap() {
         lng: position.coords.longitude
       };
 
-      infowindow.setPosition(curpos);
-      infowindow.setContent('here');
-      infowindow.open(map);
+      //infowindow.setPosition(curpos);
+      //infowindow.setContent('here');
+      //infowindow.open(map);
       map.setCenter(curpos);
 
       geocoder.geocode({
@@ -235,7 +260,7 @@ function initMap() {
               position: curpos,
               map: map
             });
-            infowindow.setContent(results[1].formatted_address);
+            //infowindow.setContent(results[1].formatted_address);
             //document.getElementById('location').value = results[1].formatted_address.split(',')[0];
           } else {
             window.alert('No results found');
@@ -261,9 +286,9 @@ function getLocation() {
         lng: position.coords.longitude
       };
 
-      infowindow.setPosition(curpos);
-      infowindow.setContent('here');
-      infowindow.open(map);
+      //infowindow.setPosition(curpos);
+      //infowindow.setContent('here');
+      //infowindow.open(map);
       map.setCenter(curpos);
 
       geocoder.geocode({
@@ -275,7 +300,7 @@ function getLocation() {
               position: curpos,
               map: map
             });
-            infowindow.setContent(results[1].formatted_address);
+            //infowindow.setContent(results[1].formatted_address);
             // document.getElementById('location').value = results[1].formatted_address.split(',')[0];
           } else {
             window.alert('No results found');
@@ -293,6 +318,124 @@ function getLocation() {
   }
 }
 
+function makeList(data) {
+  var ListItem = React.createClass({
+    render: function () {
+      return (
+        React.createElement('div', {
+            className: 'demo-card-wide mdl-card mdl-shadow--2dp'
+          },
+          React.createElement('div', {
+              className: 'mdl-card__title',
+              id: 'list_title_' + this.props.id
+            },
+            React.createElement('h2', {
+              className: 'mdl-card__title-text'
+            }, this.props.name)),
+          React.createElement('div', {
+            className: 'mdl-card__supporting-text'
+          }, 'Duration: ' + this.props.duration + ' / StayTime: ' + this.props.stay_time + ' / Distance: ' + this.props.distance + ' / Fee: ' + this.props.fee),
+          React.createElement('div', {
+              className: 'mdl-card__actions mdl-card--border'
+            },
+            React.createElement('a', {
+              className: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect',
+              onClick: changeMap
+            }, 'Get Started')
+          )
+
+        )
+      );
+    }
+  });
+
+  var ListList = React.createClass({
+    render: function () {
+      var ListNodes = this.props.data.map(function (route) {
+        return (React.createElement(ListItem, {
+          id: route.id,
+          name: route.name,
+          address: route.address,
+          description: route.description,
+          duration: route.duration,
+          stay_time: route.stay_time,
+          distance: route.distance,
+          fee: route.fee,
+          img: route.img
+        }));
+      });
+      return (
+        React.createElement('div', {
+            className: 'mdl-cell mdl-cell--6-col'
+          },
+          ListNodes
+        )
+      );
+    }
+  });
+
+
+
+  var ListBox = React.createClass({
+    componentDidUpdate: function () {},
+    loadDataFromServer: function () {},
+    getInitialState: function () {
+      return {
+        data: data
+      };
+    },
+    componentDidMount: function () {
+      this.setState({
+        data: data
+      });
+    },
+    render: function () {
+      return (
+        React.createElement(ListList, {
+          data: this.state.data
+        })
+      );
+    }
+
+  });
+
+  var elem = document.getElementById('react-list');
+  ReactDOM.render(React.createElement(ListBox, {}), elem);
+}
+
+
+
+function changeMap() {
+  document.getElementById('tab-1').classList.remove('is-active');
+  document.getElementById('tab-2').classList.remove('is-active');
+  document.getElementById('tab-3').classList.remove('is-active');
+  document.getElementById('tab-4').classList.remove('is-active');
+  document.getElementById('tab-2').classList.add('is-active');
+  document.getElementById('fixed-tab-1').classList.remove('is-active');
+  document.getElementById('fixed-tab-2').classList.remove('is-active');
+  document.getElementById('fixed-tab-3').classList.remove('is-active');
+  document.getElementById('fixed-tab-4').classList.remove('is-active');
+  document.getElementById('fixed-tab-2').classList.add('is-active');
+  refreshMap();
+}
+
+function changeList() {
+  document.getElementById('tab-1').classList.remove('is-active');
+  document.getElementById('tab-2').classList.remove('is-active');
+  document.getElementById('tab-3').classList.remove('is-active');
+  document.getElementById('tab-4').classList.remove('is-active');
+  document.getElementById('tab-3').classList.add('is-active');
+  document.getElementById('fixed-tab-1').classList.remove('is-active');
+  document.getElementById('fixed-tab-2').classList.remove('is-active');
+  document.getElementById('fixed-tab-3').classList.remove('is-active');
+  document.getElementById('fixed-tab-4').classList.remove('is-active');
+  document.getElementById('fixed-tab-3').classList.add('is-active');
+}
+
+
+
+
+
 
 
 function refreshMap() {
@@ -300,6 +443,13 @@ function refreshMap() {
     google.maps.event.trigger(map, 'resize');
   }, 100);
   getLocation();
+  initMap();
+  curStartSpot = defaultStartSpot;
+  curEndSpot = defaultEndSpot;
+  calcRoute();
+
+  render();
+
 }
 
 function createMarker(place) {
@@ -310,8 +460,8 @@ function createMarker(place) {
 
   google.maps.event.addListener(marker, 'click', function () {
     console.log(place.name);
-    infowindow.setContent(place.name);
-    infowindow.open(map, this);
+    //infowindow.setContent(place.name);
+    //infowindow.open(map, this);
   });
 }
 
@@ -328,4 +478,149 @@ function showVideo() {
     document.getElementById('video-player').src = "https://www.nhk.or.jp/nhkworld/app/vod/?vid=JoZGwxeDoM5t2pK2Ls6npDn6w4fVRi1g";
   }, 100);
 
+}
+
+
+
+
+
+
+function render() {
+  //dbg("render:"+renderFLG);
+  renderFLG = true;
+  /* ルートをレンダリング */
+  directionsDisplay = new google.maps.DirectionsRenderer({
+    "map": map,
+    "preserveViewport": true,
+    "draggable": true
+      //"suppressMarkers" : true
+  });
+  stepDisplay = new google.maps.InfoWindow();
+  /* 右カラムにルート表示 */
+  //directionsDisplay.setPanel(document.getElementById("directions_panel"));
+  /* 出発地点・到着地点マーカーが移動された時 */
+  google.maps.event.addListener(directionsDisplay, 'directions_changed', function () {
+    currentDirections = directionsDisplay.getDirections();
+    result_route.push(currentDirections);
+    var route = currentDirections.routes[0];
+    var distance = 0;
+    var distance_temp = "";
+    var duration_temp = 0;
+    var duration = 0;
+    var duration_h = 0;
+    var duration_h_temp = "";
+    var duration_m = 0;
+    var duration_m_temp = "";
+    var s = "";
+    for (var i = 0; i < route.legs.length; i++) {
+      var routeSegment = i + 1;
+      s += route.legs[i].start_address + 'to';
+      s += route.legs[i].end_address + '\n';
+      s += route.legs[i].distance.text;
+      s = "<li>" + route.legs[i].start_address + "=>" + route.legs[i].end_address + "(" + route.legs[i].distance.text + ":" + route.legs[i].duration.text + ")</li>";
+      distance_temp = route.legs[i].distance.text;
+      distance_temp = Number(distance_temp.split("km")[0]);
+      distance += distance_temp;
+      duration_temp = route.legs[i].duration.text;
+      duration_h_temp = Number(duration_temp.split("時間")[0]);
+      if (duration_temp.match("時間")) {
+        duration_temp = duration_temp.split("時間")[1];
+
+      }
+      duration_m_temp = Number(duration_temp.split("分")[0]);
+      duration_m_temp = duration_m_temp / 60;
+      duration += duration_h_temp + duration_m_temp;
+      $("#roots").append(s);
+    }
+    s = defaultStartSpot + "------>" + ary[0] + "------>" + defaultEndSpot;
+    duration = String(Math.floor(duration)) + "時間" + String(Math.floor((duration - Math.floor(duration)) * 60)) + "分";
+    s += "=====" + duration;
+    $("#roots").append(s);
+
+    console.log(distance + "km:" + duration);
+    console.log(result_route);
+  });
+}
+
+function calcRoute() {
+  var ary = [];
+  ary = ["兵庫県神戸市中央区 東川崎町1丁目7番2号"];
+  waypts = [{
+    location: ary[0],
+    stopover: true
+  }];
+
+
+  mode = google.maps.DirectionsTravelMode.DRIVING;
+  if (!renderFLG) render();
+  if (curStartSpot == defaultStartSpot && curEndSpot == defaultEndSpot) {
+    console.log("全ルート");
+    //全ルート
+    _waypts = waypts;
+  } else {
+    //一部ルート
+    _waypts = [];
+  }
+  var request = {
+    waypoints: _waypts,
+    optimizeWaypoints: true,
+    origin: curStartSpot,
+    /* 出発地点 */
+    destination: curEndSpot,
+    /* 到着地点 */
+    travelMode: mode /* 交通手段 */
+  };
+  /* ルート描画 */
+  console.log("request-----");
+  console.log(request);
+  directions.route(request, function (response, status) {
+    console.log(response);
+
+    if (status == google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+      //showSteps(response);
+    } else {
+      alert("その交通手段はリクエスト結果がありません\nstatus:" + status);
+    }
+  });
+}
+
+function showSteps(directionResult) {
+  // For each step, place a marker, and add the text to the marker's
+  // info window. Also attach the marker to an array so we
+  // can keep track of it and remove it when calculating new
+  // routes.
+  var myRoute = directionResult.routes[0].legs;
+  var marker;
+
+  for (var i = 0; i < myRoute.length; i++) {
+    var icon = "https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=" + i + "|FF0000|000000";
+    if (i === 0) {
+      icon = "https://chart.googleapis.com/chart?chst=d_map_xpin_icon&chld=pin_star|car-dealer|00FFFF|FF0000";
+    }
+    marker = new google.maps.Marker({
+      position: myRoute.start_location,
+      map: map,
+      icon: icon
+    });
+    attachInstructionText(marker, myRoute.start_address);
+    markerArray.push(marker);
+  }
+  marker = new google.maps.Marker({
+    position: myRoute.end_location,
+    map: map,
+    icon: "https://chart.googleapis.com/chart?chst=d_map_pin_icon&chld=flag|ADDE63"
+  });
+  markerArray.push(marker);
+
+  google.maps.event.trigger(markerArray[0], "click");
+}
+
+function attachInstructionText(marker, text) {
+  google.maps.event.addListener(marker, 'click', function () {
+    // Open an info window when the marker is clicked on,
+    // containing the text of the step.
+    stepDisplay.setContent(text);
+    stepDisplay.open(map, marker);
+  });
 }
