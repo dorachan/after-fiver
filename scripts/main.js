@@ -7,7 +7,7 @@ var result_route = [
     description: "キャッチコピー１",
     duration: "2hours30min",
     stay_time: "30min",
-    distance: "30km,
+    distance: "30km",
     fee: "1000JPY",
     img: ""
 },
@@ -17,7 +17,7 @@ var result_route = [
     description: "キャッチコピー２",
     duration: "1hours",
     stay_time: "30min",
-    distance: "10km,
+    distance: "10km",
     fee: "0JPY",
     img: ""
 },
@@ -27,7 +27,7 @@ var result_route = [
     description: "キャッチコピー３",
     duration: "30min",
     stay_time: "30min",
-    distance: "15km,
+    distance: "15km",
     fee: "500JPY",
     img: ""
 }
