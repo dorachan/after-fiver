@@ -4,7 +4,11 @@ var result_route = [
   {
     id: 1,
     name: "Kobe Haborland",
-    address: "1-6-2 Higashikawasakicho, Chuo Ward, Kobe, Hyogo Prefecture 650-0044",
+    address: "1 Higashi Kawasaki-cho, Chuo-ku, Kobe",
+    latlng: {
+      lat: 34.679493,
+      lng: 135.182398
+    },
     description: "Romantic evening port with vivid coloured illuminations and sparkling cruise ships.",
     duration: "2 hours",
     stay_time: "20min",
@@ -17,6 +21,10 @@ var result_route = [
     id: 2,
     name: "Rokko Garden Terrace",
     address: "1877-9 Gofuke yama Rokkosan-cho, Nada-ku, Kobe",
+    latlng: {
+      lat: 34.764050,
+      lng: 135.247246
+    },
     description: "Romantic dinner with a beautiful panoramic view.",
     duration: "1 hour",
     stay_time: "20min",
@@ -28,8 +36,11 @@ var result_route = [
   {
     id: 3,
     name: "Pearl Bridge (Akashi kaikyo Bridge)",
-    //address: "Higashi Maiko-cho, Tarumi-ku, Kobe",
-    address: "2051 Higashimaikocho, Tarumi Ward, 神戸市垂水区 Hyogo Prefecture 655-0047",
+    address: "Higashi Maiko-cho, Tarumi-ku, Kobe",
+    latlng: {
+      lat: 34.617442,
+      lng: 135.021697
+    },
     description: "The longest suspension bridge in the world. Incredible reinbow coloured illuminations.",
     duration: "1 hour",
     stay_time: "20min",
@@ -575,7 +586,11 @@ function calcRoute(num) {
   var ary = [];
 
   if (num) {
-    ary[0] = result_route[num - 1].address;
+    if (result_route[num - 1].latlng) {
+      ary[0] = result_route[num - 1].latlng;
+    } else {
+      ary[0] = result_route[num - 1].address;
+    }
   } else {
     ary = ["兵庫県神戸市中央区 東川崎町1丁目7番2号"];
   }
