@@ -4,7 +4,7 @@ var result_route = [
   {
     id: 1,
     name: "Kobe Haborland",
-    address: "1 Higashi Kawasaki-cho, Chuo-ku, Kobe",
+    address: "1-6-2 Higashikawasakicho, Chuo Ward, Kobe, Hyogo Prefecture 650-0044",
     description: "Romantic evening port with vivid coloured illuminations and sparkling cruise ships.",
     duration: "2 hours",
     stay_time: "20min",
