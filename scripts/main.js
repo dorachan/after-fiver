@@ -376,7 +376,7 @@ function makeList(data) {
       });
       return (
         React.createElement('div', {
-            className: 'mdl-cell mdl-cell--6-col',
+            className: 'mdl-cell mdl-cell--12-col',
             key: 'react-listing'
           },
           ListNodes
