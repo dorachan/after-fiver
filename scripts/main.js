@@ -350,7 +350,12 @@ function makeList(data) {
               className: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect',
               "data-number": this.props.id,
               onClick: makeRoute
-            }, 'Get Started')
+            }, 'View Route'),
+            React.createElement('a', {
+              className: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect',
+              "data-number": this.props.id,
+              onClick: makeRoute
+            }, 'Detail')
           )
 
         )
