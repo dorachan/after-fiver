@@ -28,7 +28,8 @@ var result_route = [
   {
     id: 3,
     name: "Pearl Bridge (Akashi kaikyo Bridge)",
-    address: "Higashi Maiko-cho, Tarumi-ku, Kobe",
+    //address: "Higashi Maiko-cho, Tarumi-ku, Kobe",
+    address: "2051 Higashimaikocho, Tarumi Ward, 神戸市垂水区 Hyogo Prefecture 655-0047",
     description: "The longest suspension bridge in the world. Incredible reinbow coloured illuminations.",
     duration: "1 hour",
     stay_time: "20min",
@@ -56,6 +57,11 @@ var markerArray = [];
 var _waypts = [];
 
 
+
+var centerpos = {
+  lat: 34.6896969,
+  lng: 135.1889427
+};
 
 var curpos = {
   lat: 34.6896969,
@@ -86,7 +92,6 @@ function AfterFiver() {
   this.switch2.addEventListener('click', this.toggleswitch2.bind(this));
 
   this.initFirebase();
-  makeList(result_route);
 }
 
 AfterFiver.prototype.initFirebase = function () {
@@ -102,6 +107,8 @@ AfterFiver.prototype.initFirebase = function () {
 // Go After Fiver.
 AfterFiver.prototype.go = function () {
   changeList();
+  makeList(result_route);
+
   /*
   initMap();
     var service = new google.maps.places.PlacesService(map);
@@ -229,9 +236,9 @@ window.onload = function () {
 function initMap() {
   // Create a map object and specify the DOM element for display.
   map = new google.maps.Map(document.getElementById('map'), {
-    center: curpos,
+    center: centerpos,
     //    scrollwheel: false,
-    zoom: 12,
+    zoom: 13,
     language: 'en'
   });
   infowindow = new google.maps.InfoWindow();
@@ -249,7 +256,7 @@ function initMap() {
       //infowindow.setPosition(curpos);
       //infowindow.setContent('here');
       //infowindow.open(map);
-      map.setCenter(curpos);
+      map.setCenter(centerpos);
 
       geocoder.geocode({
         'location': curpos
@@ -323,7 +330,8 @@ function makeList(data) {
     render: function () {
       return (
         React.createElement('div', {
-            className: 'demo-card-wide mdl-card mdl-shadow--2dp'
+            className: 'demo-card-wide mdl-card mdl-shadow--2dp',
+            key: this.props.key
           },
           React.createElement('div', {
               className: 'mdl-card__title',
@@ -340,7 +348,8 @@ function makeList(data) {
             },
             React.createElement('a', {
               className: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect',
-              onClick: changeMap
+              "data-number": this.props.id,
+              onClick: makeRoute
             }, 'Get Started')
           )
 
@@ -353,6 +362,7 @@ function makeList(data) {
     render: function () {
       var ListNodes = this.props.data.map(function (route) {
         return (React.createElement(ListItem, {
+          key: route.id,
           id: route.id,
           name: route.name,
           address: route.address,
@@ -366,7 +376,8 @@ function makeList(data) {
       });
       return (
         React.createElement('div', {
-            className: 'mdl-cell mdl-cell--6-col'
+            className: 'mdl-cell mdl-cell--6-col',
+            key: 'react-listing'
           },
           ListNodes
         )
@@ -392,7 +403,9 @@ function makeList(data) {
     render: function () {
       return (
         React.createElement(ListList, {
-          data: this.state.data
+          data: this.state.data,
+          key: 'react-lists'
+
         })
       );
     }
@@ -400,9 +413,23 @@ function makeList(data) {
   });
 
   var elem = document.getElementById('react-list');
-  ReactDOM.render(React.createElement(ListBox, {}), elem);
+  ReactDOM.render(React.createElement(ListBox, {
+    key: 'react-list'
+  }), elem);
 }
 
+
+function makeRoute(e) {
+  var num = e.currentTarget.getAttribute('data-number');
+  changeMap();
+  initMap();
+  calcRoute(num);
+  render();
+  setTimeout(function () {
+    google.maps.event.trigger(map, 'resize');
+    map.setCenter(centerpos);
+  }, 100);
+}
 
 
 function changeMap() {
@@ -416,7 +443,6 @@ function changeMap() {
   document.getElementById('fixed-tab-3').classList.remove('is-active');
   document.getElementById('fixed-tab-4').classList.remove('is-active');
   document.getElementById('fixed-tab-2').classList.add('is-active');
-  refreshMap();
 }
 
 function changeList() {
@@ -430,6 +456,7 @@ function changeList() {
   document.getElementById('fixed-tab-3').classList.remove('is-active');
   document.getElementById('fixed-tab-4').classList.remove('is-active');
   document.getElementById('fixed-tab-3').classList.add('is-active');
+  document.getElementById('fixed-tab-3').scrollIntoView(true);
 }
 
 
@@ -442,14 +469,8 @@ function refreshMap() {
   setTimeout(function () {
     google.maps.event.trigger(map, 'resize');
   }, 100);
-  getLocation();
-  initMap();
-  curStartSpot = defaultStartSpot;
-  curEndSpot = defaultEndSpot;
-  calcRoute();
-
-  render();
-
+  //getLocation();
+  //initMap();
 }
 
 function createMarker(place) {
@@ -530,26 +551,33 @@ function render() {
       duration_m_temp = Number(duration_temp.split("分")[0]);
       duration_m_temp = duration_m_temp / 60;
       duration += duration_h_temp + duration_m_temp;
-      $("#roots").append(s);
+      // $("#roots").append(s);
     }
     s = defaultStartSpot + "------>" + ary[0] + "------>" + defaultEndSpot;
     duration = String(Math.floor(duration)) + "時間" + String(Math.floor((duration - Math.floor(duration)) * 60)) + "分";
     s += "=====" + duration;
-    $("#roots").append(s);
+    // $("#roots").append(s);
 
     console.log(distance + "km:" + duration);
     console.log(result_route);
   });
 }
 
-function calcRoute() {
+function calcRoute(num) {
+  curStartSpot = defaultStartSpot;
+  curEndSpot = defaultEndSpot;
+
   var ary = [];
-  ary = ["兵庫県神戸市中央区 東川崎町1丁目7番2号"];
+
+  if (num) {
+    ary[0] = result_route[num - 1].address;
+  } else {
+    ary = ["兵庫県神戸市中央区 東川崎町1丁目7番2号"];
+  }
   waypts = [{
     location: ary[0],
     stopover: true
   }];
-
 
   mode = google.maps.DirectionsTravelMode.DRIVING;
   if (!renderFLG) render();
@@ -561,6 +589,26 @@ function calcRoute() {
     //一部ルート
     _waypts = [];
   }
+
+  var s1 = document.getElementById('switch-1');
+  var s2 = document.getElementById('switch-2');
+  var i1 = document.getElementById('start-loc');
+  var i2 = document.getElementById('dest-loc');
+  if (s1.checked) {
+    curStartSpot = curpos;
+  } else {
+    if (i1.value) {
+      curStartSpot = i1.value;
+    }
+  }
+  if (s2.checked) {
+    curEndSpot = curpos;
+  } else {
+    if (i2.value) {
+      curEndSpot = i2.value;
+    }
+  }
+
   var request = {
     waypoints: _waypts,
     optimizeWaypoints: true,

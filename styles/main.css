@@ -72,6 +72,10 @@ body {
   width: 100%;
 }
 
+.demo-card-wide {
+  margin-bottom: 20px;
+}
+
 .demo-card-wide.mdl-card {
   width: 100%;
 }
@@ -79,7 +83,7 @@ body {
 .demo-card-wide > .mdl-card__title {
   color: #fff;
   height: 176px;
-  background: url('/images/yakei.png') center / cover;
+  background-color: #888;
 }
 
 .demo-card-wide > .mdl-card__menu {
@@ -87,13 +91,13 @@ body {
 }
 
 #list_title_1 {
-  background-image: url(http://www.feel-kobe.jp/kobe-yakei/area/sea_side/02/images/01.png);
+  background: url(http://www.feel-kobe.jp/kobe-yakei/area/sea_side/02/images/01.png) center / cover;
 }
 
 #list_title_2 {
-  background-image: url(http://www.feel-kobe.jp/kobe-yakei/area/mountain/06/images/01.png);
+  background: url(http://www.feel-kobe.jp/kobe-yakei/area/mountain/06/images/01.png) center / cover;
 }
 
 #list_title_3 {
-  background-image: url(http://www.feel-kobe.jp/kobe-yakei/area/sea_side/01/images/01.png);
+  background: url(http://www.feel-kobe.jp/kobe-yakei/area/sea_side/01/images/01.png) center / cover;
 }
