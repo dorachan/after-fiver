@@ -62,15 +62,15 @@
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
     <header class="mdl-layout__header">
       <!--
-<div class="mdl-layout__header-row">
+      <div class="mdl-layout__header-row">
         <span class="mdl-layout-title"><i class="material-icons">local_bar</i> After Fiver</span>
       </div>
--->
+      -->
       <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
         <a href="#fixed-tab-1" id="tab-1" class="mdl-layout__tab is-active">Setting</a>
         <a href="#fixed-tab-2" id="tab-2" class="mdl-layout__tab">Map</a>
         <a href="#fixed-tab-3" id="tab-3" class="mdl-layout__tab">List</a>
-        <a href="#fixed-tab-4" id="tab-4" class="mdl-layout__tab" id="video-tab">Video</a>
+        <a href="#fixed-tab-4" id="tab-4" class="mdl-layout__tab">Video</a>
       </div>
     </header>
     <main class="mdl-layout__content">
@@ -112,15 +112,15 @@
                     </label>
 
                     <div id="switch-1-input" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                      <input class="mdl-textfield__input" type="text" id="sample3">
-                      <label class="mdl-textfield__label" for="sample3">location...</label>
+                      <input class="mdl-textfield__input" type="text" id="start-loc">
+                      <label class="mdl-textfield__label" for="start-loc">location...</label>
                     </div>
 
                     <div class="mdl-textfield mdl-js-textfield">
                       <select class="mdl-textfield__input">
                         <option>Now</option>
-                        <option>+ 30 min</option>
-                        <option>+ 1 hour</option>
+                        <option>30 min later</option>
+                        <option>1 hour later</option>
                       </select>
                     </div>
 
@@ -143,18 +143,18 @@
                     </label>
 
                     <div id="switch-2-input" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                      <input class="mdl-textfield__input" type="text" id="sample3">
-                      <label class="mdl-textfield__label" for="sample3">location...</label>
+                      <input class="mdl-textfield__input" type="text" id="dest-loc">
+                      <label class="mdl-textfield__label" for="dest-loc">location...</label>
                     </div>
 
                     <div class="mdl-textfield mdl-js-textfield">
                       <select class="mdl-textfield__input">
                         <option>30 min</option>
                         <option>1 hour</option>
-                        <option>2 hour</option>
-                        <option>3 hour</option>
-                        <option>4 hour</option>
-                        <option>5 hour</option>
+                        <option>2 hours</option>
+                        <option>3 hours</option>
+                        <option>4 hours</option>
+                        <option>5 hours</option>
                       </select>
                     </div>
 
@@ -201,7 +201,6 @@
 
   <script src="https://npmcdn.com/react@15.3.1/dist/react.js"></script>
   <script src="https://npmcdn.com/react-dom@15.3.1/dist/react-dom.js"></script>
-  <script src="https://npmcdn.com/jquery@3.1.0/dist/jquery.min.js"></script>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
