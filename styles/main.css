@@ -72,6 +72,10 @@ body {
   width: 100%;
 }
 
+.demo-card-wide {
+  margin-bottom: 20px;
+}
+
 .demo-card-wide.mdl-card {
   width: 100%;
 }

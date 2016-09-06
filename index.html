@@ -68,8 +68,8 @@
       -->
       <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
         <a href="#fixed-tab-1" id="tab-1" class="mdl-layout__tab is-active">Setting</a>
-        <a href="#fixed-tab-2" id="tab-2" class="mdl-layout__tab">Map</a>
         <a href="#fixed-tab-3" id="tab-3" class="mdl-layout__tab">List</a>
+        <a href="#fixed-tab-2" id="tab-2" class="mdl-layout__tab">Map</a>
         <a href="#fixed-tab-4" id="tab-4" class="mdl-layout__tab">Video</a>
       </div>
     </header>
@@ -112,7 +112,7 @@
                     </label>
 
                     <div id="switch-1-input" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                      <input class="mdl-textfield__input" type="text" id="start-loc">
+                      <input class="mdl-textfield__input" type="text" id="start-loc" value="6 Chome-11-1 Minatojima Nakamachi, Chūō-ku, Kōbe-shi, Hyōgo-ken 650-0046">
                       <label class="mdl-textfield__label" for="start-loc">location...</label>
                     </div>
 
@@ -143,7 +143,7 @@
                     </label>
 
                     <div id="switch-2-input" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                      <input class="mdl-textfield__input" type="text" id="dest-loc">
+                      <input class="mdl-textfield__input" type="text" id="dest-loc" value="Shin-Kobe Station">
                       <label class="mdl-textfield__label" for="dest-loc">location...</label>
                     </div>
 
@@ -169,14 +169,14 @@
           </div>
         </div>
       </section>
-      <section class="mdl-layout__tab-panel" id="fixed-tab-2">
-        <div class="page-content">
-          <div id="map"></div>
-        </div>
-      </section>
       <section class="mdl-layout__tab-panel" id="fixed-tab-3">
         <div class="page-content">
           <div class="mdl-grid" id="react-list"></div>
+        </div>
+      </section>
+      <section class="mdl-layout__tab-panel" id="fixed-tab-2">
+        <div class="page-content">
+          <div id="map"></div>
         </div>
       </section>
       <section class="mdl-layout__tab-panel" id="fixed-tab-4">
@@ -199,8 +199,8 @@
     </main>
   </div>
 
-  <script src="https://npmcdn.com/react@15.3.1/dist/react.js"></script>
-  <script src="https://npmcdn.com/react-dom@15.3.1/dist/react-dom.js"></script>
+  <script src="https://npmcdn.com/react@15.3.1/dist/react.min.js"></script>
+  <script src="https://npmcdn.com/react-dom@15.3.1/dist/react-dom.min.js"></script>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
