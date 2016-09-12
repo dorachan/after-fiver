@@ -102,6 +102,10 @@ function AfterFiver() {
   this.switch1.addEventListener('click', this.toggleswitch1.bind(this));
   this.switch2.addEventListener('click', this.toggleswitch2.bind(this));
 
+  ga('create', 'UA-83730241-1', 'auto', {
+    'appName': 'afterfiver'
+  });
+
   this.initFirebase();
 }
 
@@ -459,6 +463,9 @@ function changeMap() {
   document.getElementById('fixed-tab-3').classList.remove('is-active');
   document.getElementById('fixed-tab-4').classList.remove('is-active');
   document.getElementById('fixed-tab-2').classList.add('is-active');
+  ga('send', 'screenview', {
+    'screenName': 'Map'
+  });
 }
 
 function changeList() {
@@ -473,6 +480,9 @@ function changeList() {
   document.getElementById('fixed-tab-4').classList.remove('is-active');
   document.getElementById('fixed-tab-3').classList.add('is-active');
   document.getElementById('fixed-tab-3').scrollIntoView(true);
+  ga('send', 'screenview', {
+    'screenName': 'List'
+  });
 }
 
 
@@ -510,6 +520,9 @@ function handleLocationError(browserHasGeolocation, infowindow, pos) {
 }
 
 function showVideo() {
+  ga('send', 'screenview', {
+    'screenName': 'Video'
+  });
   setTimeout(function () {
     document.getElementById('video-container').style.display = 'block';
     document.getElementById('video-player').src = "https://www.nhk.or.jp/nhkworld/app/vod/?vid=JoZGwxeDoM5t2pK2Ls6npDn6w4fVRi1g";
