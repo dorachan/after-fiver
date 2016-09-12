@@ -369,6 +369,11 @@ function makeList(data) {
             React.createElement('a', {
               className: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect',
               "data-number": this.props.id,
+              onClick: makeNavi
+            }, 'Navi'),
+            React.createElement('a', {
+              className: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect',
+              "data-number": this.props.id,
               onClick: makeRoute
             }, 'Detail')
           )
@@ -451,6 +456,23 @@ function makeRoute(e) {
   }, 100);
 }
 
+function makeNavi(e) {
+  var num = e.currentTarget.getAttribute('data-number');
+  if (navigator.platform.match(/iPhone|iPad|iPod/)) {
+    ga('send', 'screenview', {
+      'screenName': 'Navigation_ios'
+    });
+    location.href = 'comgooglemapsurl://maps.google.com/maps?f=d&daddr=Tokyo+Tower,+Tokyo,+Japan&sll=35.6586,139.7454&sspn=0.2,0.1&nav=1&x-source=SourceApp&x-success=sourceapp://?resume=true';
+
+  } else if (navigator.userAgent.match(/Android/)) {
+    ga('send', 'screenview', {
+      'screenName': 'Navigation_android'
+    });
+    location.href = 'google.navigation:///?ll=35.6586,139.7454&title=navi&mode=w';
+  } else {
+    makeRoute(e);
+  }
+}
 
 function changeMap() {
   document.getElementById('tab-1').classList.remove('is-active');
